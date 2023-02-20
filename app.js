@@ -4,12 +4,12 @@ async function generateUnsplashPhoto(url) {
     if (response.ok) {
         data = await response.json();
         console.log(data);
-        let imgUrlsAndAlt = data.map(data => [data.urls.small , data.alt_description]);
+        let imgUrlsAndAlt = data.map(data => [data.urls.regular , data.alt_description]);
         console.log(imgUrlsAndAlt);
 
         for (let i = 0; i < imgUrlsAndAlt.length; i++) {
             let div = document.createElement("div");
-            div.className = "col-md-4 col-12 col-sm-6";
+            div.className = "col-md-4 col-12 col-sm-6 image-container";
             div.innerHTML = `<img src="${imgUrlsAndAlt[i][0]}" class="img-fluid" alt="${imgUrlsAndAlt[i][1]}">`;
             document.getElementById("imagesContainer").appendChild(div);
         }

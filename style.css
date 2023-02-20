@@ -15,9 +15,23 @@ body {
 
 h1 {
   font-family: raleway, serif;
+  font-size: clamp(8px, 5vw, 49px);
+}
+
+.form-label {
+  font-size: clamp(10px, 5vw, 20px);
 }
 
 img {
   width: 100%;
+}
+
+.image-container {
+  height: 200px;
+}
+
+.img-fluid {
   height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }/*# sourceMappingURL=style.css.map */
