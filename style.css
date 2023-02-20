@@ -34,4 +34,18 @@ img {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.fixed-icon {
+  width: 47px;
+  position: fixed;
+  bottom: 21px;
+  right: 0;
+  border: 1px solid;
+  border-radius: 50%;
+  text-align: center;
+  padding: 10px;
+}
+.fixed-icon img {
+  width: 100%;
 }/*# sourceMappingURL=style.css.map */
