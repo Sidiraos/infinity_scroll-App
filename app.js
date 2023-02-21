@@ -1,5 +1,6 @@
-async function generateUnsplashPhoto() {
-    let url = "https://api.unsplash.com/photos?client_id=RQ1qbuvh4y4Drzw5FSFJCvVbtqYg3f4BzvSyPUnCSZk";
+let page = 1;
+async function generateUnsplashPhoto(page) {
+    let url = `https://api.unsplash.com/photos?client_id=RQ1qbuvh4y4Drzw5FSFJCvVbtqYg3f4BzvSyPUnCSZk;page=${page}`;
     const response = await fetch(url);
     if (response.ok) {
         data = await response.json();
@@ -20,7 +21,7 @@ async function generateUnsplashPhoto() {
     }
 }
 
-generateUnsplashPhoto();
+generateUnsplashPhoto(page);
 
 function createInfiniteScroll(){
     let lastChildOfImagesContainer = document.querySelector("#imagesContainer").lastElementChild;
@@ -29,7 +30,9 @@ function createInfiniteScroll(){
         console.log(entries[0].isIntersecting);
         if(entries[0].isIntersecting){
             entries[0].target.classList.add("intersecting");
-            generateUnsplashPhoto();
+            page++;
+            generateUnsplashPhoto(page);
+            observer.unobserve(lastChildOfImagesContainer);
 
         }else {
             entries[0].target.classList.remove("intersecting");
