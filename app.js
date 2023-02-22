@@ -19,6 +19,8 @@ async function generateUnsplashPhoto(page) {
     
 }
 
+generateUnsplashPhoto(page);
+
 function addImagesInDOM(imgUrlsAndAlt , idContainer){
     for (let i = 0; i < imgUrlsAndAlt.length; i++) {
         let div = document.createElement("div");
@@ -27,8 +29,6 @@ function addImagesInDOM(imgUrlsAndAlt , idContainer){
         document.querySelector(`${idContainer}`).appendChild(div);
     }
 }
-
-generateUnsplashPhoto(page);
 
 function createInfiniteScroll(callApiFetch , idContainer , query){
     let lastChildOfImagesContainer = document.querySelector(`${idContainer}`).lastElementChild;
@@ -88,7 +88,6 @@ function showInfo(text){
 function handleFormSubmit(e) {
     e.preventDefault();
     let query = document.getElementById("searchInput").value;
-
     if(! query) {
         showInfo("Please enter a search term");
     } else {
@@ -106,8 +105,9 @@ function handleScrollUp(e){
     if (lock) return;
     lock = true;
     window.scrollTo(0, 0);
-
-    lock = false;
+    setTimeout(() => {
+        lock = false;
+    }, 5000)
 }
 const btnScrollUp = document.querySelector(".fixed-icon");
 
