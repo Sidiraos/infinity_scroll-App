@@ -16,13 +16,17 @@
   <body>
     <div class="container">
       <div class="text text-center">
-            <h1 class="text-decoration-underline"><span class="fw-lighter">Clone </span>Unsplash</h1>
+            <h1 class="text-decoration-underline" id="reloadPage" type="button"><span class="fw-lighter">Clone </span>Unsplash</h1>
       </div>
 
-      <div class="mt-5">
-            <label for="search" class="form-label">Votre recherche</label>
-            <input type="search" name="search" id="search" class="form-control shadow-lg">
-      </div>
+      <form action="" id="searchForm">
+            <div class="mt-5">
+              <label for="searchInput" class="form-label">Votre recherche</label>
+              <input type="search" name="search" id="searchInput" class="form-control shadow-lg" autocomplete="off">
+            </div>
+      </form>
+      
+      <p class="fs-2 mt-3 d-none" id="info"></p>
 
       <div class="row mt-3 g-2" id="imagesContainer">
             <!-- modele de code -->
@@ -37,6 +41,9 @@
             </div> -->
       </div>
 
+      <div class="row mt-3 g-2 d-none" id="searchResultImages">
+
+      </div>    
 
     </div>
 
