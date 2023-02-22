@@ -77,15 +77,10 @@ async function searchPhotos(page, query){
 
 const form = document.getElementById("searchForm");
 form.addEventListener("submit", handleFormSubmit);
-function showInfo(text){
-    info.classList.remove("d-none");
-        info.textContent = text;
-        setTimeout(() => {
-            info.classList.add("d-none");
-        }, 3000) ;
 
-}
 function handleFormSubmit(e) {
+    page = 1;
+    document.querySelector("#searchResultImages").textContent = "";
     e.preventDefault();
     let query = document.getElementById("searchInput").value;
     if(! query) {
@@ -97,6 +92,15 @@ function handleFormSubmit(e) {
         document.querySelector("#imagesContainer").classList.add("d-none");
         document.querySelector("#searchResultImages").classList.remove("d-none");
     }
+
+}
+
+function showInfo(text){
+    info.classList.remove("d-none");
+        info.textContent = text;
+        setTimeout(() => {
+            info.classList.add("d-none");
+        }, 3000) ;
 
 }
 
