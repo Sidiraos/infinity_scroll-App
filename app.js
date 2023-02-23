@@ -1,25 +1,35 @@
 let page = 1;
 const info = document.getElementById("info");
 
-async function generateUnsplashPhoto(page) {
-    let url = `https://api.unsplash.com/photos?client_id=RQ1qbuvh4y4Drzw5FSFJCvVbtqYg3f4BzvSyPUnCSZk;page=${page}`;
-    
-        const response = await fetch(url);
-        if (response.ok) {
-            data = await response.json();
+async function generateUnsplashPhoto(page , query) {
+    let searchUrl = `https://api.unsplash.com/search/photos?client_id=RQ1qbuvh4y4Drzw5FSFJCvVbtqYg3f4BzvSyPUnCSZk;page=${page}&per_page=30&query=${query}`;
+    try {
+        const results = await fetch(searchUrl);
+        if(results.ok){
+            let data = await results.json();
             console.log(data);
-            let imgUrlsAndAlt = data.map(data => [data.urls.regular , data.alt_description]);
+            if(!data.total){
+                showInfo("No results found");
+                throw new Error("No results found");
+            }
+            let imgUrlsAndAlt = data.results.map(data => [data.urls.regular , data.alt_description]);
             console.log(imgUrlsAndAlt);
-    
             addImagesInDOM(imgUrlsAndAlt , "#imagesContainer" );
-            createInfiniteScroll(generateUnsplashPhoto , "#imagesContainer" , query = undefined);
+            createInfiniteScroll(generateUnsplashPhoto , "#imagesContainer" , query);
         } else {
-            console.log(response.status);
+            showInfo("Error " + results.status);
+            document.querySelector("#imagesContainer").classList.remove("d-none");
+            throw new Error("Server Error : " + results.status)
+            
         }
+    } catch (error) {
+        console.error(error);
+        showInfo("Server Error " + error);
+    }
     
 }
 
-generateUnsplashPhoto(page);
+generateUnsplashPhoto(page , "random");
 
 function addImagesInDOM(imgUrlsAndAlt , idContainer){
     for (let i = 0; i < imgUrlsAndAlt.length; i++) {
@@ -48,39 +58,11 @@ function createInfiniteScroll(callApiFetch , idContainer , query){
         observer.observe(lastChildOfImagesContainer);
 }
 
-
-async function searchPhotos(page, query){
-        let searchUrl = `https://api.unsplash.com/search/photos?client_id=RQ1qbuvh4y4Drzw5FSFJCvVbtqYg3f4BzvSyPUnCSZk;page=${page}&query=${query}`;
-        try {
-            const results = await fetch(searchUrl);
-            if(results.ok){
-                let data = await results.json();
-                console.log(data);
-                let imgUrlsAndAlt = data.results.map(data => [data.urls.regular , data.alt_description]);
-                console.log(imgUrlsAndAlt);
-                addImagesInDOM(imgUrlsAndAlt , "#searchResultImages" );
-                createInfiniteScroll(searchPhotos , "#searchResultImages" , query);
-            } else {
-                console.log(results.status);
-                if(results.status == 403) {
-                    showInfo("Rate Limit Exceeded " + results.status);
-                    document.querySelector("#imagesContainer").classList.remove("d-none");
-                    throw new Error("Rate Limit Exceeded : " + results.status)
-                }
-            }
-        } catch (error) {
-            console.error("l'url search failed", error);
-        }
-    
-
-}
-
 const form = document.getElementById("searchForm");
 form.addEventListener("submit", handleFormSubmit);
 
 function handleFormSubmit(e) {
     page = 1;
-    document.querySelector("#searchResultImages").textContent = "";
     e.preventDefault();
     let query = document.getElementById("searchInput").value;
     if(! query) {
@@ -88,9 +70,8 @@ function handleFormSubmit(e) {
     } else {
         info.textContent = "";
         info.classList.add("d-none");
-        searchPhotos(page, query);
-        document.querySelector("#imagesContainer").classList.add("d-none");
-        document.querySelector("#searchResultImages").classList.remove("d-none");
+        document.querySelector("#imagesContainer").textContent = "";
+        generateUnsplashPhoto(page , query);
     }
 
 }
@@ -98,10 +79,9 @@ function handleFormSubmit(e) {
 function showInfo(text){
     info.classList.remove("d-none");
         info.textContent = text;
-        setTimeout(() => {
-            info.classList.add("d-none");
-        }, 3000) ;
-
+        // setTimeout(() => {
+        //     info.classList.add("d-none");
+        // }, 3000) ;
 }
 
 let lock = false;
@@ -111,7 +91,7 @@ function handleScrollUp(e){
     window.scrollTo(0, 0);
     setTimeout(() => {
         lock = false;
-    }, 5000)
+    }, 1000)
 }
 const btnScrollUp = document.querySelector(".fixed-icon");
 

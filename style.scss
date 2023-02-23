@@ -12,7 +12,9 @@ body {
   font-family: Open sans, Helvetica, sans-serif;
   padding: clamp(20px, 5vw, 50px) 20px 10px;
 }
-
+.container {
+    max-width: 800px !important;
+}
 h1 {
     font-family: raleway, serif;
     font-size: clamp(8px , 5vw , 49px);
