@@ -54,7 +54,7 @@ function createInfiniteScroll(callApiFetch , idContainer , query){
         }else {
             entries[0].target.classList.remove("intersecting");
         };
-    } , { threshold: 0.1 });
+    } , { rootMargin: "50%"});
         observer.observe(lastChildOfImagesContainer);
 }
 
